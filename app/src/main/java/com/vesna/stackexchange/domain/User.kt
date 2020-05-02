@@ -3,6 +3,7 @@ package com.vesna.stackexchange.domain
 import java.util.*
 
 data class User(
+    val id: Int,
     val username: String,
     val reputation: Int,
     val avatar: String,
