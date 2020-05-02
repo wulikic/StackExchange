@@ -1,7 +1,9 @@
 package com.vesna.stackexchange.presentation.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.vesna.stackexchange.domain.Badges
 import com.vesna.stackexchange.domain.GetFirst20UsersSortedAlphabetically
+import com.vesna.stackexchange.domain.User
 import com.vesna.stackexchange.testutils.RxJavaTestRule
 import com.vesna.stackexchange.testutils.testObserver
 import io.mockk.MockKAnnotations
@@ -13,6 +15,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.util.*
 
 class SearchViewModelTest {
 
@@ -62,7 +65,7 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `when text is entered and search button clicked then should show search in progress`() {
+    fun `when text is entered and search button clicked then should show emit search in progress`() {
         val sut = SearchViewModel(searchUsersMock)
         val testObserver = sut.states.testObserver()
         sut.onSearchTextChanged("fake query")
@@ -71,11 +74,44 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `when text is not entered and search button clicked then should not show search in progress`() {
+    fun `when text is not entered and search button clicked then should not emit show search in progress`() {
         val sut = SearchViewModel(searchUsersMock)
         val testObserver = sut.states.testObserver()
         sut.onSearchClicked()
         assertFalse(testObserver.value!!.showSearchInProgress)
+    }
+
+    @Test
+    fun `when user from the list is clicked then should emit navigate to user details`() {
+        every { searchUsersMock.execute("fake query") } returns Single.just(
+            listOf(
+                User(
+                    id = 123,
+                    username = "fakeUsername",
+                    reputation = 10,
+                    location = "Fake location",
+                    avatar = "fake avatar path",
+                    badges = Badges(bronzeCount = 12, silverCount = 3, goldCount = 1),
+                    creationDate = Date(123456789)
+        )))
+        val sut = SearchViewModel(searchUsersMock)
+        val testObserver = sut.states.testObserver()
+        sut.onSearchTextChanged("fake query")
+        sut.onSearchClicked()
+        sut.onUserClicked(123)
+
+        val actual = testObserver.value!!.navigateToUserDetails
+        assertNotNull(actual)
+        val actualUser = actual!!.peek()
+        assertEquals(123, actualUser.id)
+        assertEquals("fakeUsername", actualUser.username)
+        assertEquals(10, actualUser.reputation)
+        assertEquals("Fake location", actualUser.location)
+        assertEquals("fake avatar path", actualUser.avatar)
+        assertEquals(12, actualUser.badges.bronzeCount)
+        assertEquals(3, actualUser.badges.silverCount)
+        assertEquals(1, actualUser.badges.goldCount)
+        assertEquals(Date(123456789), actualUser.creationDate)
     }
 
 }

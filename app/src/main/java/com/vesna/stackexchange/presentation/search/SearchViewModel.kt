@@ -24,7 +24,8 @@ class SearchViewModel(
             query = "",
             users = emptyList(),
             searchInProgress = false,
-            searchFailed = false
+            searchFailed = null,
+            userClicked = null
         )
     }
 
@@ -43,6 +44,15 @@ class SearchViewModel(
         updateState { it.copy(query = text) }
     }
 
+    fun onUserClicked(userId: Int) {
+        updateState { state ->
+            val user = state.users.find { it.id == userId }
+            user?.let {
+                state.copy(userClicked = Event(it))
+            } ?: kotlin.run { throw IllegalStateException("Selected user is not in the list") }
+        }
+    }
+
     private fun performSearch(query: String): Disposable {
         return searchUsers.execute(query)
             .subscribeOn(Schedulers.io())
@@ -51,8 +61,7 @@ class SearchViewModel(
                 updateState {
                     it.copy(
                         users = emptyList(),
-                        searchInProgress = true,
-                        searchFailed = false
+                        searchInProgress = true
                     )
                 }
             }
@@ -62,15 +71,14 @@ class SearchViewModel(
                     updateState {
                         it.copy(
                             users = result,
-                            searchInProgress = false,
-                            searchFailed = false
+                            searchInProgress = false
                         )
                     }
                 }, {
                     updateState {
                         it.copy(
                             searchInProgress = false,
-                            searchFailed = true
+                            searchFailed = Event(Any())
                         )
                     }
                 })
@@ -95,7 +103,8 @@ private data class SearchState(
     val query: String,
     val users: List<User>,
     val searchInProgress: Boolean,
-    val searchFailed: Boolean
+    val searchFailed: Event<Any>?,
+    val userClicked: Event<User>?
 )
 
 private fun LiveData<SearchState>.toUi(): LiveData<SearchUiModel> {
@@ -109,8 +118,8 @@ private fun LiveData<SearchState>.toUi(): LiveData<SearchUiModel> {
                 )
             },
             showSearchInProgress = state.searchInProgress,
-            showNoUsersFound = state.users.isEmpty() && state.query.isNotEmpty() && !state.searchFailed,
-            showError = state.searchFailed // TODO should be event
+            showError = state.searchFailed,
+            navigateToUserDetails = state.userClicked
         )
     }
 }

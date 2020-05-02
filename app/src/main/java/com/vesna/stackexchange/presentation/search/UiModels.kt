@@ -1,10 +1,12 @@
 package com.vesna.stackexchange.presentation.search
 
+import com.vesna.stackexchange.domain.User
+
 data class SearchUiModel(
     val users: List<UserUiModel>,
     val showSearchInProgress: Boolean,
-    val showNoUsersFound: Boolean,
-    val showError: Boolean
+    val showError: Event<Any>?,
+    val navigateToUserDetails: Event<User>?
 )
 
 data class UserUiModel(
