@@ -1,21 +1,19 @@
 package com.vesna.stackexchange.presentation.search
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vesna.stackexchange.R
 import com.vesna.stackexchange.presentation.App
+import com.vesna.stackexchange.presentation.add
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.view_holder.*
 import kotlinx.android.synthetic.main.view_holder.view.*
 import javax.inject.Inject
 
@@ -25,6 +23,8 @@ class SearchActivity : AppCompatActivity() {
     lateinit var providerFactory: SearchProviderFactory
     private lateinit var viewModel: SearchViewModel
     private lateinit var adapter: ListAdapter<UserUiModel, ViewHolder>
+
+    private val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,33 +36,27 @@ class SearchActivity : AppCompatActivity() {
         button.setOnClickListener {
             viewModel.onSearchClicked()
         }
-        searchView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                s?.toString().orEmpty().let {
-                    viewModel.onSearchTextChanged(it)
-                }
+        searchView.addTextChangedListener(object : AfterTextChangedWatcher() {
+            override fun textChanged(text: String) {
+                viewModel.onSearchTextChanged(text)
             }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
         })
 
         viewModel = ViewModelProvider(this, providerFactory)[SearchViewModel::class.java]
 
-        viewModel.uiStates.subscribe {
-            adapter.submitList(it.users)
-        }
+        viewModel.uiStates
+            .subscribe { adapter.submitList(it.users) }
+            .add(disposables)
+    }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.clear()
     }
 
     private fun recyclerViewAdapter(recyclerView: RecyclerView): ListAdapter<UserUiModel, ViewHolder> {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        adapter = object : ListAdapter<UserUiModel, ViewHolder>(Diff()) {
+        adapter = object : ListAdapter<UserUiModel, ViewHolder>(UserUiModelDiff()) {
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
                 val view = LayoutInflater.from(parent.context)
@@ -82,15 +76,4 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    private class Diff : DiffUtil.ItemCallback<UserUiModel>() {
-
-        override fun areItemsTheSame(oldItem: UserUiModel, newItem: UserUiModel): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: UserUiModel, newItem: UserUiModel): Boolean {
-            return oldItem == newItem
-        }
-    }
 }
