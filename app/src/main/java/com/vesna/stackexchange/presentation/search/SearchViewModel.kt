@@ -1,15 +1,14 @@
 package com.vesna.stackexchange.presentation.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import com.vesna.stackexchange.domain.GetFirst20UsersSortedAlphabetically
 import com.vesna.stackexchange.domain.User
-import com.vesna.stackexchange.presentation.Event
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import java.lang.IllegalStateException
 
 class SearchViewModel(
@@ -18,24 +17,21 @@ class SearchViewModel(
 
     private var disposable: Disposable? = null
 
-    private val _states = MutableLiveData<SearchState>()
+    private val clearState = SearchState(
+        query = "",
+        users = emptyList(),
+        searchInProgress = false
+    )
 
-    init {
-        _states.value = SearchState(
-            query = "",
-            users = emptyList(),
-            searchInProgress = false,
-            searchFailed = null,
-            userClicked = null
-        )
-    }
+    private val states = BehaviorSubject.createDefault(clearState)
+    private val events = PublishSubject.create<SearchUiEvent>()
 
-    val states: LiveData<SearchUiModel>
-        get() = _states.toUi()
+    val uiStates: Observable<SearchUiModel> = states.map { toUi(it) }
+    val uiEvents: Observable<SearchUiEvent> = events
 
     fun onSearchClicked() {
         disposable?.dispose()
-        val searchQuery = _states.last().query
+        val searchQuery = states.last().query
         if (searchQuery.isNotEmpty()) {
             disposable = performSearch(searchQuery)
         }
@@ -46,15 +42,10 @@ class SearchViewModel(
     }
 
     fun onUserClicked(userId: Int) {
-        updateState { state ->
-            val user = state.users.find { it.id == userId }
-            user?.let {
-                state.copy(userClicked = Event(
-                    it
-                )
-                )
-            } ?: kotlin.run { throw IllegalStateException("Selected user is not in the list") }
-        }
+        val user = states.last().users.find { it.id == userId }
+        user?.let {
+            events.onNext(NavigateToUserDetails(it))
+        } ?: kotlin.run { throw IllegalStateException("Selected user is not in the list") }
     }
 
     private fun performSearch(query: String): Disposable {
@@ -79,20 +70,14 @@ class SearchViewModel(
                         )
                     }
                 }, {
-                    updateState {
-                        it.copy(
-                            searchInProgress = false,
-                            searchFailed = Event(
-                                Any()
-                            )
-                        )
-                    }
+                    updateState { it.copy(searchInProgress = false) }
+                    events.onNext(ShowError)
                 })
     }
 
     private fun updateState(reducer: (SearchState) -> SearchState) {
-        val last = _states.last()
-        _states.value = reducer(last)
+        val last = states.last()
+        states.onNext(reducer(last))
     }
 
     override fun onCleared() {
@@ -103,19 +88,13 @@ class SearchViewModel(
             }
         }
     }
-}
 
-private data class SearchState(
-    val query: String,
-    val users: List<User>,
-    val searchInProgress: Boolean,
-    val searchFailed: Event<Any>?,
-    val userClicked: Event<User>?
-)
+    private fun BehaviorSubject<SearchState>.last(): SearchState {
+        return value ?: throw IllegalStateException("There should be at least the initial value")
+    }
 
-private fun LiveData<SearchState>.toUi(): LiveData<SearchUiModel> {
-    return map { state ->
-        SearchUiModel(
+    private fun toUi(state: SearchState): SearchUiModel {
+        return SearchUiModel(
             users = state.users.map {
                 UserUiModel(
                     username = it.username,
@@ -123,13 +102,13 @@ private fun LiveData<SearchState>.toUi(): LiveData<SearchUiModel> {
                     userId = it.id
                 )
             },
-            showSearchInProgress = state.searchInProgress,
-            showError = state.searchFailed,
-            navigateToUserDetails = state.userClicked
+            showSearchInProgress = state.searchInProgress
         )
     }
 }
 
-private fun LiveData<SearchState>.last(): SearchState {
-    return value ?: throw IllegalStateException("There should be at least the initial value")
-}
+private data class SearchState(
+    val query: String,
+    val users: List<User>,
+    val searchInProgress: Boolean
+)

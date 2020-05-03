@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.vesna.stackexchange.R
 import com.vesna.stackexchange.presentation.App
+import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
 class SearchActivity : AppCompatActivity() {
@@ -20,6 +21,11 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         viewModel = ViewModelProvider(this, providerFactory)[SearchViewModel::class.java]
+
+        button.setOnClickListener {
+            viewModel.onSearchClicked()
+        }
+
 
     }
 }
