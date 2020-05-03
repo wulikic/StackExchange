@@ -1,9 +1,11 @@
 package com.vesna.stackexchange.presentation.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vesna.stackexchange.R
 import com.vesna.stackexchange.presentation.App
 import com.vesna.stackexchange.presentation.add
+import com.vesna.stackexchange.presentation.toParcelable
+import com.vesna.stackexchange.presentation.user.UserActivity
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.view_holder.view.*
@@ -47,12 +51,25 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         viewModel.uiStates
             .subscribe {
                 adapter.submitList(it.users)
                 if (it.showSearchInProgress) progressView.show() else progressView.hide()
             }
             .add(disposables)
+
+        viewModel.uiEvents
+            .subscribe { event ->
+                when (event) {
+                    ShowError -> Toast.makeText(applicationContext, R.string.search_error, Toast.LENGTH_SHORT).show()
+                    is NavigateToUserDetails -> startActivity(Intent(this, UserActivity::class.java).apply {
+                        putExtra("user", event.user.toParcelable())
+                    })
+                }
+            }
+            .add(disposables)
+
     }
 
     override fun onStop() {

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">StackExchange</string>
     <string name="search">Search</string>
+    <string name="search_error">Failed to fetch results</string>
+    <string name="location">Location</string>
+    <string name="reputation">Reputation</string>
+    <string name="age">Age</string>
+    <string name="created">Created</string>
 </resources>

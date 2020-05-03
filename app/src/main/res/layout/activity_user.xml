@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/avatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/reputationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/reputation"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/reputation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/reputationLabel"
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="1234567" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/goldBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/badge"
+            android:drawablePadding="3dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/avatar"
+            app:layout_constraintTop_toBottomOf="@id/reputation"
+            tools:text="1234567" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/silverBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/badge"
+            android:drawablePadding="3dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/goldBadge"
+            app:layout_constraintTop_toBottomOf="@id/reputation"
+            tools:text="1234567" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/bronzeBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/badge"
+            android:drawablePadding="3dp"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/silverBadge"
+            app:layout_constraintTop_toBottomOf="@id/reputation"
+            tools:text="1234567" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/locationLabel"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="@string/location"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/avatar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/locationLabel"
+            app:layout_constraintTop_toBottomOf="@id/avatar"
+            tools:text="Belgrade" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/ageLabel"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/age"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/locationLabel" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/ageLabel"
+            app:layout_constraintTop_toBottomOf="@id/location"
+            tools:text="45" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/createdLabel"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="@string/created"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ageLabel" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/created"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/createdLabel"
+            app:layout_constraintTop_toBottomOf="@id/age"
+            tools:text="May, 4th 2013" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
