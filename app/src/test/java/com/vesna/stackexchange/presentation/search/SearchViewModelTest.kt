@@ -92,7 +92,8 @@ class SearchViewModelTest {
                     location = "Fake location",
                     avatar = "fake avatar path",
                     badges = Badges(bronzeCount = 12, silverCount = 3, goldCount = 1),
-                    creationDate = Date(123456789)
+                    creationDate = Date(123456789),
+                    age = 56
         )))
         val sut = SearchViewModel(searchUsersMock)
         val testObserver = sut.states.testObserver()
@@ -112,6 +113,7 @@ class SearchViewModelTest {
         assertEquals(3, actualUser.badges.silverCount)
         assertEquals(1, actualUser.badges.goldCount)
         assertEquals(Date(123456789), actualUser.creationDate)
+        assertEquals(56, actualUser.age)
     }
 
 }

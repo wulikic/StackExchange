@@ -1,4 +1,4 @@
-package com.vesna.stackexchange.presentation.search
+package com.vesna.stackexchange.presentation
 
 open class Event<out T>(private val content: T) {
 

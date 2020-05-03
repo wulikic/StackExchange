@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.vesna.stackexchange.domain.GetFirst20UsersSortedAlphabetically
 import com.vesna.stackexchange.domain.User
+import com.vesna.stackexchange.presentation.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -48,7 +49,10 @@ class SearchViewModel(
         updateState { state ->
             val user = state.users.find { it.id == userId }
             user?.let {
-                state.copy(userClicked = Event(it))
+                state.copy(userClicked = Event(
+                    it
+                )
+                )
             } ?: kotlin.run { throw IllegalStateException("Selected user is not in the list") }
         }
     }
@@ -78,7 +82,9 @@ class SearchViewModel(
                     updateState {
                         it.copy(
                             searchInProgress = false,
-                            searchFailed = Event(Any())
+                            searchFailed = Event(
+                                Any()
+                            )
                         )
                     }
                 })

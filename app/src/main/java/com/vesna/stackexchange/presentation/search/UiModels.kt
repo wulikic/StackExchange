@@ -1,6 +1,7 @@
 package com.vesna.stackexchange.presentation.search
 
 import com.vesna.stackexchange.domain.User
+import com.vesna.stackexchange.presentation.Event
 
 data class SearchUiModel(
     val users: List<UserUiModel>,
