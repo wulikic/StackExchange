@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:text="@string/search"
         app:backgroundTint="@color/colorAccent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -21,17 +21,30 @@
         android:inputType="text"
         android:singleLine="true"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchView"
         app:layout_constraintVertical_weight="1" />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progressView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        android:layout_marginTop="30dp"
+        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintVertical_weight="0.5"
+        style="?android:attr/progressBarStyle"
+        app:elevation="10dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

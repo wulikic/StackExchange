@@ -32,6 +32,8 @@ class SearchActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_search)
 
+        viewModel = ViewModelProvider(this, providerFactory)[SearchViewModel::class.java]
+
         adapter = recyclerViewAdapter(recyclerView)
         button.setOnClickListener {
             viewModel.onSearchClicked()
@@ -41,16 +43,20 @@ class SearchActivity : AppCompatActivity() {
                 viewModel.onSearchTextChanged(text)
             }
         })
+    }
 
-        viewModel = ViewModelProvider(this, providerFactory)[SearchViewModel::class.java]
-
+    override fun onStart() {
+        super.onStart()
         viewModel.uiStates
-            .subscribe { adapter.submitList(it.users) }
+            .subscribe {
+                adapter.submitList(it.users)
+                if (it.showSearchInProgress) progressView.show() else progressView.hide()
+            }
             .add(disposables)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         disposables.clear()
     }
 
