@@ -7,9 +7,10 @@ data class User(
     val username: String,
     val reputation: Int,
     val avatar: String,
-    val location: String,
     val creationDate: Date,
-    val badges: Badges
+    val badges: Badges,
+    val location: String?,
+    val age: Int?
 )
 
 data class Badges(

@@ -4,5 +4,5 @@ import io.reactivex.Single
 
 interface GetFirst20UsersSortedAlphabetically {
 
-    fun execute(nameMatcher: String): Single<List<User>>
+    fun execute(nameQuery: String): Single<List<User>>
 }
