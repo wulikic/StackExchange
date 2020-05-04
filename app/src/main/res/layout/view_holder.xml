@@ -6,6 +6,7 @@
     android:background="?android:selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    tools:ignore="Overdraw"
     android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatTextView

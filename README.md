@@ -16,7 +16,7 @@ and the list of first 20 matching users will be shown.
 - If the api call fails, a toast error message will be shown.
 - If one search has been already made and a list of users is displayed, the list won't be cleared until the search button is clicked with
 non empty search query.
-- When it's clicked on a user from the list, a new screen will be open with more information about that user.
+- When it's clicked on a user from the list, a new screen will be launched with more information about that user.
 
 # Version support
 Minimum supported API version is 19
