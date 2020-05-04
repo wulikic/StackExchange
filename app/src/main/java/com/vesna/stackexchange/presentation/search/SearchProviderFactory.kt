@@ -9,6 +9,7 @@ class SearchProviderFactory(
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
             return SearchViewModel(searchUsers) as T
         } else {
             throw IllegalStateException("Class not supported")

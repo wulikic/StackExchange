@@ -31,7 +31,7 @@ class GetFirst20UsersSortedAlphabeticallyImpl(private val api: RetrofitApi) :
                         goldCount = it.badges.gold
                     ),
                     creationDate = Date(it.creationDate * 1000),
-                    location = it.location,
+                    location = it.location.takeIf { location -> !location.isNullOrEmpty() },
                     age = it.age
                 )
             }

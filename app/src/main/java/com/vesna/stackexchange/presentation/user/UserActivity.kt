@@ -48,8 +48,8 @@ class UserActivity : AppCompatActivity() {
             setBadgeColor(R.color.bronze)
         }
 
-        location.text = user.location
-        age.text = user.age.toString()
+        location.text = user.location ?: "-"
+        age.text = user.age?.toString() ?: "-"
         created.text = dateFormatter.format(Date(user.creationTime))
     }
 
