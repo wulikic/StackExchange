@@ -20,20 +20,17 @@ class AppModule {
         return SearchProviderFactory(searchUsers)
     }
 
-    @Provides
-    @Reusable
+    @Provides @Reusable
     fun getFirst20UsersSortedAlphabetically(retrofitApi: RetrofitApi): GetFirst20UsersSortedAlphabetically {
         return GetFirst20UsersSortedAlphabeticallyImpl(retrofitApi)
     }
 
-    @Provides
-    @Reusable
+    @Provides @Reusable
     fun retrofitApi(retrofit: Retrofit): RetrofitApi {
         return retrofit.create(RetrofitApi::class.java)
     }
 
-    @Provides
-    @Reusable
+    @Provides @Reusable
     fun retrofit(): Retrofit {
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
