@@ -18,6 +18,9 @@ and the list of first 20 matching users will be shown.
 non empty search query.
 - When it's clicked on a user from the list, a new screen will be open with more information about that user.
 
+# Version support
+Minimum supported API version is 19
+
 # Technologies used
 - Kotlin
 - RxJava2
