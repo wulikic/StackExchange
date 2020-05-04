@@ -1,28 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="50dp"
+    android:orientation="horizontal">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/reputation"
         android:layout_width="80dp"
         android:layout_height="match_parent"
+        android:gravity="end|center_vertical"
         android:textSize="16sp"
-        tools:text="12345678"
-        android:gravity="end"
-        android:layout_gravity="center_vertical"/>
+        tools:text="12345678" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/name"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
-        android:textSize="16sp"
+        android:layout_weight="1"
+        android:gravity="start|center_vertical"
         android:singleLine="true"
-        android:gravity="start"
-        android:layout_gravity="center_vertical"/>
+        android:textSize="16sp" />
 </androidx.appcompat.widget.LinearLayoutCompat>

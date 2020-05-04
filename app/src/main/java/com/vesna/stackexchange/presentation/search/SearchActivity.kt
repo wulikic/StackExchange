@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -62,14 +63,21 @@ class SearchActivity : AppCompatActivity() {
         viewModel.uiEvents
             .subscribe { event ->
                 when (event) {
-                    ShowError -> Toast.makeText(applicationContext, R.string.search_error, Toast.LENGTH_SHORT).show()
-                    is NavigateToUserDetails -> startActivity(Intent(this, UserActivity::class.java).apply {
-                        putExtra("user", event.user.toParcelable())
-                    })
+                    ShowError -> Toast.makeText(
+                        applicationContext,
+                        R.string.search_error,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    is NavigateToUserDetails -> startActivity(
+                        Intent(
+                            this,
+                            UserActivity::class.java
+                        ).apply {
+                            putExtra("user", event.user.toParcelable())
+                        })
                 }
             }
             .add(disposables)
-
     }
 
     override fun onStop() {
@@ -78,7 +86,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun recyclerViewAdapter(recyclerView: RecyclerView): ListAdapter<UserUiModel, ViewHolder> {
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         adapter = object : ListAdapter<UserUiModel, ViewHolder>(UserUiModelDiff()) {
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -94,6 +101,8 @@ class SearchActivity : AppCompatActivity() {
                 holder.itemView.setOnClickListener { viewModel.onUserClicked(item.userId) }
             }
         }
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = adapter
         return adapter
     }
