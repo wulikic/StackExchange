@@ -73,7 +73,7 @@ class SearchActivity : AppCompatActivity() {
                             this,
                             UserActivity::class.java
                         ).apply {
-                            putExtra("user", event.user.toParcelable())
+                            putExtra(UserActivity.INTENT_DATA, event.user.toParcelable())
                         })
                 }
             }

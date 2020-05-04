@@ -7,4 +7,5 @@
     <string name="age">Age</string>
     <string name="created">Created</string>
     <string name="search_hint">Search for names</string>
+    <string name="activity_user_title">User</string>
 </resources>

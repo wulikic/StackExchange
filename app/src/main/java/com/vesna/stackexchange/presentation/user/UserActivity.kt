@@ -23,11 +23,11 @@ class UserActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_user)
         supportActionBar?.apply {
-            title = "User"
+            title = getString(R.string.activity_user_title)
             setDisplayHomeAsUpEnabled(true)
         }
 
-        val user = intent.extras?.getParcelable<ParcelableUser>("user")!!
+        val user = intent.extras?.getParcelable<ParcelableUser>(INTENT_DATA)!!
 
         name.text = user.username
         Glide.with(this).load(user.avatar).into(avatar)
@@ -59,6 +59,10 @@ class UserActivity : AppCompatActivity() {
                 ContextCompat.getColor(this.context, color),
                 PorterDuff.Mode.SRC_IN
             )
+    }
+
+    companion object {
+        const val INTENT_DATA = "user"
     }
 }
 

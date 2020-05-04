@@ -10,7 +10,7 @@ import com.vesna.stackexchange.R
 import com.vesna.stackexchange.presentation.ParcelableUser
 import org.junit.Rule
 
-object UserActivityRobot {
+class UserActivityRobot {
 
     @Rule
     @JvmField
@@ -18,7 +18,7 @@ object UserActivityRobot {
 
     fun launch_activity_with_passed_username(username: String) {
         rule.launchActivity(Intent().apply {
-            putExtra("user", parcelableUser.copy(username = username))
+            putExtra(UserActivity.INTENT_DATA, parcelableUser.copy(username = username))
         })
     }
 
@@ -28,7 +28,7 @@ object UserActivityRobot {
 
     fun launch_activity_with_passed_age(age: Int?) {
         rule.launchActivity(Intent().apply {
-            putExtra("user", parcelableUser.copy(age = age))
+            putExtra(UserActivity.INTENT_DATA, parcelableUser.copy(age = age))
         })
     }
 

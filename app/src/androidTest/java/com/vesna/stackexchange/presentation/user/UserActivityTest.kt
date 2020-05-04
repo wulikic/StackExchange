@@ -28,7 +28,7 @@ class UserActivityTest {
 
     @Test
     fun should_show_username_sent_through_intent() {
-        with(UserActivityRobot) {
+        with(UserActivityRobot()) {
             launch_activity_with_passed_username("Username007")
             username_should_be("Username007")
         }
@@ -36,7 +36,7 @@ class UserActivityTest {
 
     @Test
     fun should_show_age_sent_through_intent() {
-        with(UserActivityRobot) {
+        with(UserActivityRobot()) {
             launch_activity_with_passed_age(67)
             age_should_be("67")
         }
