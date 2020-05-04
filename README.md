@@ -11,7 +11,7 @@
 # Behaviour
 - When the app is launched, a search box will be shown for searching users on StackOverflow by username.
 - When search text is entered and search button clicked, api call will be made to endpoint https://api.stackexchange.com/2.2/users
-and the list of first 20 matching users will be shown.
+and the list of first 20 matching users will be shown in alphabetical order together with their reputation.
 - If text is not entered in the search field, the api call won't be made.
 - If the api call fails, a toast error message will be shown.
 - If one search has been already made and a list of users is displayed, the list won't be cleared until the search button is clicked with

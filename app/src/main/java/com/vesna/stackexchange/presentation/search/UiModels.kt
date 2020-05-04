@@ -7,12 +7,15 @@ data class SearchUiModel(
     val showSearchInProgress: Boolean
 )
 
-sealed class SearchUiEvent
-object ShowError : SearchUiEvent()
-data class NavigateToUserDetails(val user: User) : SearchUiEvent()
-
 data class UserUiModel(
     val username: String,
     val reputation: Int,
     val userId: Int
 )
+
+
+
+sealed class SearchUiEvent
+object ShowError : SearchUiEvent()
+data class NavigateToUserDetails(val user: User) : SearchUiEvent()
+
