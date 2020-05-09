@@ -43,11 +43,7 @@ class SearchActivity : AppCompatActivity() {
         button.setOnClickListener {
             viewModel.onSearchClicked()
         }
-        searchView.addTextChangedListener(object : AfterTextChangedWatcher() {
-            override fun textChanged(text: String) {
-                viewModel.onSearchTextChanged(text)
-            }
-        })
+        searchView.addAfterTextChangedListener { viewModel.onSearchTextChanged(it) }
     }
 
     override fun onStart() {
