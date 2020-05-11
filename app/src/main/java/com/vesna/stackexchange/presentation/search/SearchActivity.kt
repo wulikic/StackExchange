@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.vesna.stackexchange.R
-import com.vesna.stackexchange.presentation.App
+import com.vesna.stackexchange.presentation.DependencyGraph
 import com.vesna.stackexchange.presentation.add
 import com.vesna.stackexchange.presentation.toParcelable
 import com.vesna.stackexchange.presentation.user.UserActivity
@@ -33,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as App).appComponent.inject(this)
+        DependencyGraph.injector.inject(this)
 
         setContentView(R.layout.activity_search)
 
